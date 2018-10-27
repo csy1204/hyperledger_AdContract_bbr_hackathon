@@ -1,6 +1,8 @@
 # Hyperledger Fabric 기반 광고 유통 통합 시스템
 본 프로젝트는 BBR Hackathon 2018에 출품한 하이퍼렛져 패브릭 기반의 광고 유통 통합 시스템 DAPP 입니다. 기존 광고 유통의 문제를 블록체인을 통해 해결하며 훨씬 더 빠르고 투명한 계약이 가능하다는 장점이 있습니다.
 
+팀원: [조상연]('http://github.com/csy1204') (Flask, Hyperledger Dapp), [이동건]('http://github.com/inspirit941')(Hyperledger Fabric & Composer)
+
 ## 0. 준비 사항
 > Nvm, Npm, Node 필요
 > nvm use --lts 을 통해 최신 Node 버젼 유지
