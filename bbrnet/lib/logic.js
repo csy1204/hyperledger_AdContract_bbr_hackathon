@@ -35,12 +35,12 @@ async function initialApplication(application) { // eslint-disable-line no-unuse
     // letter.mediarep = factory.newRelationship(namespace, 'MediaRep', application.mediarep);
     // letter.mediaagent = factory.newRelationship(namespace, 'MediaAgent', application.mediaagent);
     letter.adDetails = application.adDetails;
-    
     letter.approval = [
         factory.newRelationship(namespace, 'Advertiser', application.owner)
         ,factory.newRelationship(namespace, 'AdAgency', application.adagency)];
         // 광고주, 광고대행사 두 개체는 실행 시점에서 이미 허락한 것으로 간주하기에 
         // relation을 두 개 걸어둔다.
+
 
     letter.days = application.days;
     letter.times = application.times;
