@@ -109,3 +109,7 @@ transaction ViewCount{
 // TRANSACTIONS FOR SETUP
 transaction CreateDemoParticipants {
 }
+
+transaction ViewCount{
+  --> AdContract adc
+}
