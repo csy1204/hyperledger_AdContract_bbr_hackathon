@@ -1,0 +1,125 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * Write your model definitions here
+ */
+
+namespace org.example.biznet
+
+// ENUMS
+enum ContractStatus {
+  o AWAITING_APPROVAL
+  o APPROVED
+  // o RECEIVED
+  // o READY_FOR_PAYMENT
+  o COMMITTED
+  o REJECTED
+}
+
+// ASSETS
+asset AdContract identified by contractId {
+  o String contractId
+  --> Advertiser owner
+  --> AdAgency adagency
+  --> MediaRep mediarep
+  --> MediaAgent mediaagent
+  o AdDetails adDetails
+  --> Person [] approval
+  o String days 
+  o String times
+  o String programTitle
+  o ContractStatus status
+  o String closeReason optional
+}
+
+// PARTICIPANTS
+abstract participant Person identified by personId {
+  o String personId
+  o String name
+}
+
+participant Advertiser extends Person {
+}
+
+participant AdAgency extends Person {
+  o String agencyName
+}
+
+participant MediaRep extends Person {
+  o String mediaRepName
+}
+
+participant MediaAgent extends Person {
+  o String mediaAgentName
+}
+
+concept AdDetails {
+  o String adType
+  o String title
+  o Integer duration
+}
+
+// TRANSACTIONS + EVENTS
+transaction InitialApplication {
+  o String contractId
+  --> Advertiser owner
+  --> AdAgency adagency
+  o AdDetails adDetails
+}
+
+
+transaction Approve {
+  --> AdContract adc
+  --> Person approvingParty
+}
+
+transaction Commit {
+  --> AdContract adc
+}
+
+transaction Reject {
+  --> AdContract adc
+  o String closeReason
+}
+
+
+// TRANSACTIONS FOR SETUP
+transaction CreateDemoParticipants {
+}
+
+
+
+participant SampleParticipant identified by participantId {
+  o String participantId
+  o String firstName
+  o String lastName
+}
+
+asset SampleAsset identified by assetId {
+  o String assetId
+  --> SampleParticipant owner
+  o String value
+}
+
+transaction SampleTransaction {
+  --> SampleAsset asset
+  o String newValue
+}
+
+event SampleEvent {
+  --> SampleAsset asset
+  o String oldValue
+  o String newValue
+}
