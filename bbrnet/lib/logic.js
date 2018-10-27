@@ -33,7 +33,7 @@ async function initialApplication(application) { // eslint-disable-line no-unuse
     letter.owner = factory.newRelationship(namespace, 'Advertiser', application.owner); // owner
     letter.adagency = factory.newRelationship(namespace, 'AdAgency', application.adagency); // adagency
     letter.mediarep = factory.newRelationship(namespace, 'MediaRep', application.mediarep);
-    // letter.mediaagent = factory.newRelationship(namespace, 'MediaAgent', application.mediaagent);
+    letter.mediaagent = factory.newRelationship(namespace, 'MediaAgent', application.mediaagent);
     letter.adDetails = application.adDetails;
     letter.approval = [
         factory.newRelationship(namespace, 'Advertiser', application.owner)

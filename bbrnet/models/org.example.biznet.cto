@@ -33,8 +33,8 @@ asset AdContract identified by contractId {
   o String contractId
   --> Advertiser owner
   --> AdAgency adagency
-  --> MediaRep mediarep optional
-  --> MediaAgent mediaagent optional
+  --> MediaRep mediarep
+  --> MediaAgent mediaagent
   o AdDetails adDetails
   --> Person [] approval
   o String days
