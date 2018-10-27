@@ -3,7 +3,7 @@
     "composer": "^0.20.2"
   },
   "name": "adnet",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "abcd",
   "scripts": {
     "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/adnet.bna",
@@ -32,8 +32,5 @@
     "nyc": "latest",
     "mkdirp": "latest",
     "mocha": "latest"
-  },
-  "dependencies": {
-    "composer-rest-server": "^0.20.2"
   }
 }
