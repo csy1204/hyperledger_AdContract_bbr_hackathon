@@ -33,8 +33,8 @@ asset AdContract identified by contractId {
   o String contractId
   --> Advertiser owner
   --> AdAgency adagency
-  --> MediaRep mediarep
-  --> MediaAgent mediaagent
+  --> MediaRep mediarep optional
+  --> MediaAgent mediaagent optional
   o AdDetails adDetails
   --> Person [] approval
   o String days 
@@ -54,15 +54,15 @@ participant Advertiser extends Person {
 }
 
 participant AdAgency extends Person {
-  o String agencyName
+  // o String agencyName
 }
 
 participant MediaRep extends Person {
-  o String mediaRepName
+  // o String mediaRepName
 }
 
 participant MediaAgent extends Person {
-  o String mediaAgentName
+  // o String mediaAgentName
 }
 
 concept AdDetails {
@@ -74,13 +74,18 @@ concept AdDetails {
 // TRANSACTIONS + EVENTS
 transaction InitialApplication {
   o String contractId
-  --> Advertiser owner
-  --> AdAgency adagency
+  o String owner
+  o String adagency
   o AdDetails adDetails
+  o String days 
+  o String times
+  o String programTitle
 }
 
 
 transaction Approve {
+  o String AdContractId
+  
   --> AdContract adc
   --> Person approvingParty
 }
@@ -97,29 +102,4 @@ transaction Reject {
 
 // TRANSACTIONS FOR SETUP
 transaction CreateDemoParticipants {
-}
-
-
-
-participant SampleParticipant identified by participantId {
-  o String participantId
-  o String firstName
-  o String lastName
-}
-
-asset SampleAsset identified by assetId {
-  o String assetId
-  --> SampleParticipant owner
-  o String value
-}
-
-transaction SampleTransaction {
-  --> SampleAsset asset
-  o String newValue
-}
-
-event SampleEvent {
-  --> SampleAsset asset
-  o String oldValue
-  o String newValue
 }
