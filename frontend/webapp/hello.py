@@ -5,6 +5,20 @@ import requests
 import json
 app = Flask(__name__)
 
+media_rep_dic = {'JTBC': 'JTBCMediaComm',
+'MBC': 'MBCKobaco',
+'KBS': 'KBSKobaco',
+'TVChosun': 'TVChosunMediaRep',
+'SBS': 'SBSMediaCreate',
+'TVN': 'Mezzomedia'}
+
+contract_status = {
+  "AWAITING_APPROVAL": 'warning',
+  "APPROVED": 'primary',
+  "COMMITTED": 'success',
+  "REJECTED": 'danger'
+}
+
 @app.route('/contract')
 def contract():
     return render_template('contract.html')
@@ -42,6 +56,8 @@ def submit_transaction():
             "contractId": "",
             "owner": "Samsung",
             "adagency": "Jaeil",
+            "mediarep": media_rep_dic.get(media_name),
+            "mediaagent": media_name,
             "adDetails": {
                 "$class": "org.example.biznet.AdDetails",
                 "adType": ad_type,
@@ -50,12 +66,11 @@ def submit_transaction():
             },
             "days": day_array[i],
             "times": time_array[i],
-            "programTitle": "복면가왕",
+            "programTitle": "나혼자산다",
             "timestamp": "2018-10-27T13:43:41.520Z"
         }
         for i, media_name in enumerate(media_array)
     ]
-
     
     headers = {
         'Content-Type': "application/json",
@@ -81,7 +96,11 @@ def result(ad_type, ad_title, ad_duration, media_array):
 
 @app.route('/contracts')
 def contracts():
-    return render_template('contracts.html')
+    url = 'http://localhost:3000/api/AdContract'
+    headers = {'Accept': "application/json"}
+    response = requests.get(url,headers=headers)
+    result_json = response.json()
+    return render_template('contracts.html', results = result_json, status_dic = contract_status)
 
 
 @app.route('/hello')

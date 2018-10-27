@@ -2,11 +2,11 @@
   "engines": {
     "composer": "^0.20.2"
   },
-  "name": "adnet",
-  "version": "0.0.3",
+  "name": "adnett",
+  "version": "0.0.5",
   "description": "abcd",
   "scripts": {
-    "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/adnet.bna",
+    "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/adnett.bna",
     "pretest": "npm run lint",
     "lint": "eslint .",
     "test": "nyc mocha -t 0 test/*.js && cucumber-js"

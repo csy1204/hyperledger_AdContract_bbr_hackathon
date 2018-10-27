@@ -41,7 +41,6 @@ async function initialApplication(application) { // eslint-disable-line no-unuse
         // 광고주, 광고대행사 두 개체는 실행 시점에서 이미 허락한 것으로 간주하기에 
         // relation을 두 개 걸어둔다.
 
-
     letter.days = application.days;
     letter.times = application.times;
     letter.programTitle = application.programTitle;
@@ -88,6 +87,23 @@ async function approve(approveRequest) { // eslint-disable-line no-unused-vars
 }
 
 /**
+ * Create the participants needed for the demo
+ * @param {org.example.biznet.ViewCount} ViewCount - the CreateDemoParticipants transaction
+ * @transaction
+ */
+async function ViewCount(AdContractData){
+    // resources:org.example.biznet.AdContract#contractId를 인자로 받는다.
+    let letter = AdContractData.adc;
+
+    if (letter.status === "CLOSED" || letter.status === "REJECTED"){
+        return;        
+    }
+    letter.count++;
+    const assetRegistry = await getAssetRegistry(AdContractData.adc.getFullyQualifiedType());
+    await assetRegistry.update(letter);
+}
+
+/**
  * Update the LOC to show that it has been approved by a given person
  * @param {org.example.biznet.Reject} Reject - the Approve transaction
  * @transaction
@@ -130,16 +146,16 @@ async function createDemoParticipants() { // eslint-disable-line no-unused-vars
     await AdAgencyRegistry.add(Jaeil);
 
     const MediaRepRegistry = await getParticipantRegistry(namespace + '.MediaRep');
-    let JTBC = factory.newResource(namespace, 'MediaRep', 'JTBC미디어컴');
-    let MBC = factory.newResource(namespace, 'MediaRep', 'MBC코바코');
-    let KBS = factory.newResource(namespace, 'MediaRep', 'KBS코바코');
-    let TVJ = factory.newResource(namespace, 'MediaRep', 'TV조선미디어렙');
-    let SBS = factory.newResource(namespace, 'MediaRep', 'SBS미디어크리에이트');
-    let TVN = factory.newResource(namespace, 'MediaRep', '메조미디어');
+    let JTBC = factory.newResource(namespace, 'MediaRep', 'JTBCMediaComm');
+    let MBC = factory.newResource(namespace, 'MediaRep', 'MBCKobaco');
+    let KBS = factory.newResource(namespace, 'MediaRep', 'KBSKobaco');
+    let TVJ = factory.newResource(namespace, 'MediaRep', 'TVChosunMediaRep');
+    let SBS = factory.newResource(namespace, 'MediaRep', 'SBSMediaCreate');
+    let TVN = factory.newResource(namespace, 'MediaRep', 'Mezzomedia');
     JTBC.name ='JTBC';
     MBC.name = 'MBC';
     KBS.name = 'KBS';
-    TVJ.name = "TV조선";
+    TVJ.name = 'TVChosun';
     SBS.name = 'SBS';
     TVN.name = 'TVN';
     await MediaRepRegistry.add(JTBC);
@@ -153,13 +169,13 @@ async function createDemoParticipants() { // eslint-disable-line no-unused-vars
     JTBC = factory.newResource(namespace, 'MediaAgent', 'JTBC');
     MBC  = factory.newResource(namespace, 'MediaAgent',  'MBC');
     KBS  = factory.newResource(namespace, 'MediaAgent',  'KBS');
-    TVJ  = factory.newResource(namespace, 'MediaAgent', "TV조선");
+    TVJ  = factory.newResource(namespace, 'MediaAgent', 'TVChosun');
     SBS  = factory.newResource(namespace, 'MediaAgent',  'SBS');
     TVN  = factory.newResource(namespace, 'MediaAgent',  'TVN');
     JTBC.name ='JTBC';
     MBC.name = 'MBC';
     KBS.name = 'KBS';
-    TVJ.name = "TV조선";
+    TVJ.name = 'TVChosun';
     SBS.name = 'SBS';
     TVN.name = 'TVN';
     await MediaAgentRegistry.add(JTBC);

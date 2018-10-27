@@ -43,6 +43,7 @@ asset AdContract identified by contractId {
   o ContractStatus status
   o String closeReason optional
   o String closePerson optional
+  o Integer count default=0
 }
 
 // PARTICIPANTS
@@ -77,6 +78,8 @@ transaction InitialApplication {
   o String contractId
   o String owner
   o String adagency
+  o String mediarep
+  o String mediaagent
   o AdDetails adDetails
   o String days 
   o String times
@@ -99,6 +102,9 @@ transaction Reject {
   o String closeReason
 }
 
+transaction ViewCount{
+  --> AdContract adc
+}
 
 // TRANSACTIONS FOR SETUP
 transaction CreateDemoParticipants {
