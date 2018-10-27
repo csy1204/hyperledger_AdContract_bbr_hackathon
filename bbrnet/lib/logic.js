@@ -28,7 +28,7 @@
 async function initialApplication(application) { // eslint-disable-line no-unused-vars
     const factory = getFactory();
     const namespace = 'org.example.biznet';
-
+    
     const letter = factory.newResource(namespace, 'AdContract', application.contractId);
     letter.owner = factory.newRelationship(namespace, 'Advertiser', application.owner); // owner
     letter.adagency = factory.newRelationship(namespace, 'AdAgency', application.adagency); // adagency
@@ -168,33 +168,19 @@ async function createDemoParticipants() { // eslint-disable-line no-unused-vars
     await MediaAgentRegistry.add(TVJ);
     await MediaAgentRegistry.add(SBS);
     await MediaAgentRegistry.add(TVN);
-    // const bank2 = factory.newResource(namespace, 'Bank', 'EB');
-    // bank2.name = 'Eastwood Banking';
-    // await bankRegistry.add(bank2);
 
-    // create Samsung employees
-    // var employeeRegistry = await getParticipantRegistry(namespace + '.BankEmployee');
-    // const employee1 = factory.newResource(namespace, 'BankEmployee', 'matias');
-    // employee1.name = 'Matías';
-    // employee1.bank = factory.newRelationship(namespace, 'Bank', 'BoD');
-    // await employeeRegistry.add(employee1);
-    // const employee2 = factory.newResource(namespace, 'BankEmployee', 'ella');
-    // employee2.name = 'Ella';
-    // employee2.bank = factory.newRelationship(namespace, 'Bank', 'EB');
-    // await employeeRegistry.add(employee2);
+}
+/**
+ * Create the participants needed for the demo
+ * @param {org.example.biznet.ViewCount} ViewCount - the CreateDemoParticipants transaction
+ * @transaction
+ */
+async function ViewCount(AdContractData){
+    // resources:org.example.biznet.AdContract#contractId를 인자로 받는다.
+    let letter = AdContractData.adc;
 
-    // // create customers
-    // const customerRegistry = await getParticipantRegistry(namespace + '.Customer');
-    // const customer1 = factory.newResource(namespace, 'Customer', 'alice');
-    // customer1.name = 'Alice';
-    // customer1.lastName= 'Hamilton';
-    // customer1.bank = factory.newRelationship(namespace, 'Bank', 'BoD');
-    // customer1.companyName = 'QuickFix IT';
-    // await customerRegistry.add(customer1);
-    // const customer2 = factory.newResource(namespace, 'Customer', 'bob');
-    // customer2.name = 'Bob';
-    // customer2.lastName= 'Appleton';
-    // customer2.bank = factory.newRelationship(namespace, 'Bank', 'EB');
-    // customer2.companyName = 'Conga Computers';
-    // await customerRegistry.add(customer2);
+    if (letter.status === "CLOSED" || letter.status ==="REJECTED"){
+        return;        
+    }
+    adc.count++;
 }

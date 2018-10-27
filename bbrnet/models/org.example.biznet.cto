@@ -43,6 +43,7 @@ asset AdContract identified by contractId {
   o ContractStatus status
   o String closeReason optional
   o String closePerson optional
+  o Integer count default=0
 }
 
 // PARTICIPANTS
@@ -102,4 +103,8 @@ transaction Reject {
 
 // TRANSACTIONS FOR SETUP
 transaction CreateDemoParticipants {
+}
+
+transaction ViewCount{
+  --> AdContract adc
 }
