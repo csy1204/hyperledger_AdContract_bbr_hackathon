@@ -32,7 +32,7 @@ async function initialApplication(application) { // eslint-disable-line no-unuse
     const letter = factory.newResource(namespace, 'AdContract', application.contractId);
     letter.owner = factory.newRelationship(namespace, 'Advertiser', application.owner); // owner
     letter.adagency = factory.newRelationship(namespace, 'AdAgency', application.adagency); // adagency
-    // letter.mediarep = factory.newRelationship(namespace, 'MediaRep', application.mediarep);
+    letter.mediarep = factory.newRelationship(namespace, 'MediaRep', application.mediarep);
     // letter.mediaagent = factory.newRelationship(namespace, 'MediaAgent', application.mediaagent);
     letter.adDetails = application.adDetails;
     letter.approval = [
@@ -130,14 +130,44 @@ async function createDemoParticipants() { // eslint-disable-line no-unused-vars
     await AdAgencyRegistry.add(Jaeil);
 
     const MediaRepRegistry = await getParticipantRegistry(namespace + '.MediaRep');
-    const JTBC = factory.newResource(namespace, 'MediaRep', 'JTBC');
-    JTBC.name = 'JTBC';
+    let JTBC = factory.newResource(namespace, 'MediaRep', 'JTBC미디어컴');
+    let MBC = factory.newResource(namespace, 'MediaRep', 'MBC코바코');
+    let KBS = factory.newResource(namespace, 'MediaRep', 'KBS코바코');
+    let TVJ = factory.newResource(namespace, 'MediaRep', 'TV조선미디어렙');
+    let SBS = factory.newResource(namespace, 'MediaRep', 'SBS미디어크리에이트');
+    let TVN = factory.newResource(namespace, 'MediaRep', '메조미디어');
+    JTBC.name ='JTBC';
+    MBC.name = 'MBC';
+    KBS.name = 'KBS';
+    TVJ.name = "TV조선";
+    SBS.name = 'SBS';
+    TVN.name = 'TVN';
     await MediaRepRegistry.add(JTBC);
+    await MediaRepRegistry.add(MBC);
+    await MediaRepRegistry.add(KBS);
+    await MediaRepRegistry.add(TVJ);
+    await MediaRepRegistry.add(SBS);
+    await MediaRepRegistry.add(TVN);
 
     const MediaAgentRegistry = await getParticipantRegistry(namespace + '.MediaAgent');
-    const TV = factory.newResource(namespace, 'MediaAgent', 'TV');
-    TV.name = 'TV광고';
-    await MediaAgentRegistry.add(TV);
+    JTBC = factory.newResource(namespace, 'MediaAgent', 'JTBC');
+    MBC  = factory.newResource(namespace, 'MediaAgent',  'MBC');
+    KBS  = factory.newResource(namespace, 'MediaAgent',  'KBS');
+    TVJ  = factory.newResource(namespace, 'MediaAgent', "TV조선");
+    SBS  = factory.newResource(namespace, 'MediaAgent',  'SBS');
+    TVN  = factory.newResource(namespace, 'MediaAgent',  'TVN');
+    JTBC.name ='JTBC';
+    MBC.name = 'MBC';
+    KBS.name = 'KBS';
+    TVJ.name = "TV조선";
+    SBS.name = 'SBS';
+    TVN.name = 'TVN';
+    await MediaAgentRegistry.add(JTBC);
+    await MediaAgentRegistry.add(MBC);
+    await MediaAgentRegistry.add(KBS);
+    await MediaAgentRegistry.add(TVJ);
+    await MediaAgentRegistry.add(SBS);
+    await MediaAgentRegistry.add(TVN);
     // const bank2 = factory.newResource(namespace, 'Bank', 'EB');
     // bank2.name = 'Eastwood Banking';
     // await bankRegistry.add(bank2);

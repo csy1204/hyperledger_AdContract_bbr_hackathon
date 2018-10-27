@@ -9,15 +9,23 @@ query Contracts_AdAgency {
   description: ""
   statement:
     SELECT org.example.biznet.AdContract
-      WHERE (owner == _$AdAgency)
+      WHERE (adagency == _$AdAgency)
 }
 
-query Contracts_AdAgency2 {
+query Contracts_MediaRep {
   description: ""
   statement:
     SELECT org.example.biznet.AdContract
-      WHERE (adagency == _$AdAgency)
+      WHERE (mediarep == _$mediarep)
 }
+
+query Contracts_MediaAgent {
+  description: ""
+  statement:
+    SELECT org.example.biznet.AdContract
+      WHERE (mediaagent == _$mediaagent)
+}
+
 // query AllCivils {
 //   description: "Returns all civils in the registry"
 //   statement:
