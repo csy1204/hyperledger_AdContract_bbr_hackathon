@@ -23,3 +23,17 @@
 ### MediaAgent (매체사)
 - String mediaAgentId
 - String name
+
+
+axios.post(this.config.restServer.httpURL+'/InitialApplication', {
+    "$class": "org.example.loc.InitialApplication",
+    "letterId": ("L" + currentTime),
+    "applicant": "resource:org.example.loc.Customer#alice",
+    "beneficiary": "resource:org.example.loc.Customer#bob",
+    "rules": this.createRules(),
+    "productDetails": {
+    "$class": "org.example.loc.ProductDetails",
+    "productType": type,
+    "quantity": quantity,
+    "pricePerUnit": price.toFixed(2)
+    }
