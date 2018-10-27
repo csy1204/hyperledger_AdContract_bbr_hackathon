@@ -37,11 +37,12 @@ asset AdContract identified by contractId {
   --> MediaAgent mediaagent optional
   o AdDetails adDetails
   --> Person [] approval
-  o String days 
+  o String days
   o String times
   o String programTitle
   o ContractStatus status
   o String closeReason optional
+  o String closePerson optional
 }
 
 // PARTICIPANTS
@@ -84,8 +85,6 @@ transaction InitialApplication {
 
 
 transaction Approve {
-  o String AdContractId
-  
   --> AdContract adc
   --> Person approvingParty
 }
@@ -96,6 +95,7 @@ transaction Commit {
 
 transaction Reject {
   --> AdContract adc
+  --> Person rejectingParty
   o String closeReason
 }
 

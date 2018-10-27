@@ -1,4 +1,10 @@
-composer archive create -t dir -n ../
+cd ../../
+
+./startFabric.sh
+
+cd hyperledger_adcontract_bbr_hackathon/bbrnet
+
+composer archive create -t dir -n ./
 
 composer network install -a bbrnet@0.0.1.bna -c PeerAdmin@hlfv1
 

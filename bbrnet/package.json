@@ -2,11 +2,11 @@
   "engines": {
     "composer": "^0.20.2"
   },
-  "name": "bbrnet",
+  "name": "adnet",
   "version": "0.0.1",
   "description": "abcd",
   "scripts": {
-    "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/bbrnet.bna",
+    "prepublish": "mkdirp ./dist && composer archive create --sourceType dir --sourceName . -a ./dist/adnet.bna",
     "pretest": "npm run lint",
     "lint": "eslint .",
     "test": "nyc mocha -t 0 test/*.js && cucumber-js"
@@ -32,5 +32,8 @@
     "nyc": "latest",
     "mkdirp": "latest",
     "mocha": "latest"
+  },
+  "dependencies": {
+    "composer-rest-server": "^0.20.2"
   }
 }

@@ -18,29 +18,7 @@
  */
 
 /**
-//  * Sample transaction
-//  * @param {org.example.biznet.SampleTransaction} sampleTransaction
-//  * @transaction
-//  */
-// async function sampleTransaction(tx) {
-//     // Save the old value of the asset.
-//     const oldValue = tx.asset.value;
 
-//     // Update the asset with the new value.
-//     tx.asset.value = tx.newValue;
-
-//     // Get the asset registry for the asset.
-//     const assetRegistry = await getAssetRegistry('org.example.biznet.SampleAsset');
-//     // Update the asset in the asset registry.
-//     await assetRegistry.update(tx.asset);
-
-//     // Emit an event for the modified asset.
-//     let event = getFactory().newEvent('org.example.biznet', 'SampleEvent');
-//     event.asset = tx.asset;
-//     event.oldValue = oldValue;
-//     event.newValue = tx.newValue;
-//     emit(event);
-// }
 
 /**
  * Create the AdContract asset
@@ -61,7 +39,8 @@ async function initialApplication(application) { // eslint-disable-line no-unuse
     letter.approval = [
         factory.newRelationship(namespace, 'Advertiser', application.owner)
         ,factory.newRelationship(namespace, 'AdAgency', application.adagency)];
-        // 광고주, 광고대행사 두 개체는 실행 시점에서 이미 허락한 것으로 간주하기에 relation을 두 개 걸어둔다.
+        // 광고주, 광고대행사 두 개체는 실행 시점에서 이미 허락한 것으로 간주하기에 
+        // relation을 두 개 걸어둔다.
 
     letter.days = application.days;
     letter.times = application.times;
@@ -72,10 +51,6 @@ async function initialApplication(application) { // eslint-disable-line no-unuse
     const assetRegistry = await getAssetRegistry(letter.getFullyQualifiedType());
     await assetRegistry.add(letter);
 
-    // emit event
-    // const applicationEvent = factory.newEvent(namespace, 'InitialApplicationEvent');
-    // applicationEvent.loc = letter;
-    // emit(applicationEvent);
 }
 
 /**
@@ -87,46 +62,52 @@ async function approve(approveRequest) { // eslint-disable-line no-unused-vars
     const factory = getFactory();
     const namespace = 'org.example.biznet';
 
-    let letter = approveRequest.loc;
-
+    let letter = approveRequest.adc;
+    
     if (letter.status === 'CLOSED' || letter.status === 'REJECTED') {
         throw new Error ('This Contract is either CLOSED or REJECTED.');
-    } else if (letter.approval.length === 4) {
+    } else if (letter.approval.length > 4) {
         throw new Error ('All four parties have already approved this Contract.');
     } else if (letter.approval.includes(approveRequest.approvingParty)) {
-        throw new Error ('This person has already approved this letter of credit');
-    } else if (approveRequest.approvingParty.getType() === 'BankEmployee') {
-        letter.approval.forEach((approvingParty) => {
-            let bankApproved = false;
-            try {
-                bankApproved = approvingParty.getType() === 'BankEmployee' && approvingParty.bank.getIdentifier() === approveRequest.approvingParty.bank.getIdentifier();
-            } catch (err) {
-                // ignore error as they don't have rights to access that participant
-            }
-            if (bankApproved) {
-                throw new Error('Your bank has already approved of this request');
-            }
-        });
+        // 같은 Participant가 중복 실행할 경우 오류 반환
+        throw new Error ('This person has already signed this Contract.');
+    } else if (approveRequest.approvingParty.getType() === 'MediaRep') {
+        letter.approval.push(factory.newRelationship(namespace, approveRequest.approvingParty.getType(), approveRequest.approvingParty.getIdentifier()));
+        letter.status = "APPROVED"
     }
-
-    letter.approval.push(factory.newRelationship(namespace, approveRequest.approvingParty.getType(), approveRequest.approvingParty.getIdentifier()));
-    // update the status of the letter if everyone has approved
+    else if (approveRequest.approvingParty.getType() === 'MediaAgent'){
+        letter.approval.push(factory.newRelationship(namespace, approveRequest.approvingParty.getType(), approveRequest.approvingParty.getIdentifier()));
+    }    
     if (letter.approval.length === 4) {
-        letter.status = 'APPROVED';
+        letter.status = 'COMMITTED';
     }
-
-    // update approval[]
-    const assetRegistry = await getAssetRegistry(approveRequest.loc.getFullyQualifiedType());
+    
+    const assetRegistry = await getAssetRegistry(approveRequest.adc.getFullyQualifiedType());
     await assetRegistry.update(letter);
 
-    // // emit event
-    // const approveEvent = factory.newEvent(namespace, 'ApproveEvent');
-    // approveEvent.loc = approveRequest.loc;
-    // approveEvent.approvingParty = approveRequest.approvingParty;
-    // emit(approveEvent);
 }
 
+/**
+ * Update the LOC to show that it has been approved by a given person
+ * @param {org.example.biznet.Reject} Reject - the Approve transaction
+ * @transaction
+ */
+async function Reject(RejectRequest){
+    // const factory = getFactory();
+    // const namespace = 'org.example.biznet';
 
+    let letter = RejectRequest.adc;
+    if (letter.status === 'REJECTED'){
+        throw new Error("This Contract is already rejected.");
+    }
+
+    letter.closePerson = RejectRequest.rejectingParty.getIdentifier();
+    letter.closeReasson = RejectRequest.closeReason;
+    letter.status = "REJECTED";
+
+    const assetRegistry = await getAssetRegistry(RejectRequest.adc.getFullyQualifiedType());
+    await assetRegistry.update(letter);
+}
 
 /**
  * Create the participants needed for the demo
