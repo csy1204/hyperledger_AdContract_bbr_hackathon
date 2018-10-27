@@ -186,17 +186,3 @@ async function createDemoParticipants() { // eslint-disable-line no-unused-vars
     await MediaAgentRegistry.add(TVN);
 
 }
-/**
- * Create the participants needed for the demo
- * @param {org.example.biznet.ViewCount} ViewCount - the CreateDemoParticipants transaction
- * @transaction
- */
-async function ViewCount(AdContractData){
-    // resources:org.example.biznet.AdContract#contractId를 인자로 받는다.
-    let letter = AdContractData.adc;
-
-    if (letter.status === "CLOSED" || letter.status ==="REJECTED"){
-        return;        
-    }
-    adc.count++;
-}

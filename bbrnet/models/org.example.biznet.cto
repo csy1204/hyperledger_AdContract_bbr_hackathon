@@ -102,10 +102,6 @@ transaction Reject {
   o String closeReason
 }
 
-transaction ViewCount{
-  --> AdContract adc
-}
-
 // TRANSACTIONS FOR SETUP
 transaction CreateDemoParticipants {
 }
